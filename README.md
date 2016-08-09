@@ -25,6 +25,8 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+require 'ba_upload'
+
 # your supplied certificate and passphrase
 connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
 
@@ -40,6 +42,17 @@ connection.error_files.each do |error_file|
   FileUtils.cp(tf.path, target_path)
 end
 ```
+
+### Usage from outside Ruby (e.g. Cronjob/script):
+
+```ruby
+#!/usr/bin/env ruby
+require 'ba_upload'
+connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
+connection.upload(file: File.open(ARGV[0]))
+```
+
+Save to a file and just run it with the xml file as argument
 
 
 
