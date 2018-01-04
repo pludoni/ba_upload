@@ -23,7 +23,7 @@ module BaUpload
 
     def error_files
       m.get 'https://hrbaxml.arbeitsagentur.de/'
-      links = m.page.links_with(text: /ESP/)
+      links = m.page.links_with(text: /ESP|ESV/)
       links.map do |link|
         ErrorFile.new(link)
       end
