@@ -1,5 +1,7 @@
 # Bundesagentur fuer Arbeit upload
 
+[![Gem Version](https://badge.fury.io/rb/ba_upload.svg)](https://badge.fury.io/rb/ba_upload)
+
 This is a Ruby Gem that aids to simplify interaction with the API of the Arbeitsagentur of Germany.
 
 Since early 2016 Arbeitsagentur switched to a HTTPS client certificate (hrbaxml.arbeitsagentur.de) instead their beloved FTP upload tool. The OpenSSL library helps to convert that cert to a format Mechanize/curl can understand.
