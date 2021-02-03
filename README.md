@@ -57,6 +57,18 @@ connection.upload(file: File.open(ARGV[0]))
 Save to a file and just run it with the xml file as argument
 
 
+### Downloading "misc" files
+
+BA provides a often updated Position description databae ("VAM" Berufe). The Gem can help to download it:
+
+```
+connection.misc.each do |link|
+  target = "vendor/ba/#{link.href}"
+  next if File.exist?(target)
+  response = link.click
+  File.open(target, "wb+") { |f| f.write(response.body) }
+end
+```
 
 ## License
 

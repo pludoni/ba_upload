@@ -28,5 +28,15 @@ module BaUpload
         ErrorFile.new(link)
       end
     end
+
+    def misc
+      m.get 'https://hrbaxml.arbeitsagentur.de/'
+      m.page.links_with(text: /sonstiges/).first.click
+      m.page.links.reject { |i| i.href[/^\?|mailto:/] || i.href == '/' }
+    end
+
+    def shutdown
+      m.shutdown
+    end
   end
 end
