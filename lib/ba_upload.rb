@@ -15,6 +15,15 @@ module BaUpload
     cert = BaUpload.export_certificate(file_path: file_path, passphrase: passphrase)
     BaUpload::Connection.new(cert[:key], cert[:cert], cert[:ca_cert])
   end
+
+  def self.offers_filename(partner_id, type = '', segment = '')
+    "DS#{partner_id}_#{type}#{segment}.xml"
+  end
+
+  def timestamp
+    now = DateTime.now
+    "#{now.year}-#{now.month}-#{now.day}_#{now.hours}-#{now.minutes}-#{now.seconds}"
+  end
 end
 
 require 'ba_upload/connection'
