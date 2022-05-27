@@ -43,6 +43,14 @@ connection.error_files.each do |error_file|
   tf = error_file.tempfile
   FileUtils.cp(tf.path, target_path)
 end
+
+# generate file name for JobPostings XML
+# arguments are concatenated with _ and added to file name
+filename = BaUpload.offers_filename('PARTNER_ID')
+# returns "DSPARTNER_ID_2022-01-01_00-00-00.xml"
+filename = BaUpload.offers_filename('PARTNER_ID', 'S', '0123')
+# returns "DSPARTNER_ID_2022-01-01_00-00-00_S_0123.xml"
+
 ```
 
 ### Usage from outside Ruby (e.g. Cronjob/script):
@@ -55,7 +63,6 @@ connection.upload(file: File.open(ARGV[0]))
 ```
 
 Save to a file and just run it with the xml file as argument
-
 
 ### Downloading "misc" files
 
@@ -73,4 +80,3 @@ end
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
