@@ -1,10 +1,8 @@
-# Bundesagentur fuer Arbeit upload
+# Bundesagentur für Arbeit upload gem
 
 [![Gem Version](https://badge.fury.io/rb/ba_upload.svg)](https://badge.fury.io/rb/ba_upload)
 
 This is a Ruby Gem that aids to simplify interaction with the API of the Arbeitsagentur of Germany.
-
-Since early 2016 Arbeitsagentur switched to a HTTPS client certificate (hrbaxml.arbeitsagentur.de) instead their beloved FTP upload tool. The OpenSSL library helps to convert that cert to a format Mechanize/curl can understand.
 
 ## Installation
 
@@ -18,11 +16,15 @@ gem 'ba_upload'
 
 And then execute:
 
-    $ bundle
+```
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install ba_upload
+```
+gem install ba_upload
+```
 
 ## Usage
 
@@ -46,9 +48,9 @@ end
 
 # generate file name for JobPostings XML
 # arguments are concatenated with _ and added to file name
-filename = BaUpload.offers_filename('PARTNER_ID')
+filename = BaUpload.postings_filename('PARTNER_ID')
 # returns "DSPARTNER_ID_2022-01-01_00-00-00.xml"
-filename = BaUpload.offers_filename('PARTNER_ID', 'S', '0123')
+filename = BaUpload.postings_filename('PARTNER_ID', 'S', '0123')
 # returns "DSPARTNER_ID_2022-01-01_00-00-00_S_0123.xml"
 
 ```
@@ -62,7 +64,7 @@ connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', 
 connection.upload(file: File.open(ARGV[0]))
 ```
 
-Save to a file and just run it with the xml file as argument
+Save to a file and just run it with the xml file as argument.
 
 ### Downloading "misc" files
 

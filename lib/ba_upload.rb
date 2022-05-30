@@ -16,7 +16,7 @@ module BaUpload
     BaUpload::Connection.new(cert[:key], cert[:cert], cert[:ca_cert])
   end
 
-  def self.offers_filename(partner_id, *args)
+  def self.postings_filename(partner_id, *args)
     params = args && args.count > 0 ? ('_' + args.join('_')) : ''
     "DS#{partner_id}_#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S")}#{params}.xml"
   end
