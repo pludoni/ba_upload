@@ -61,13 +61,30 @@ Save to a file and just run it with the xml file as argument
 
 BA provides a often updated Position description databae ("VAM" Berufe). The Gem can help to download it:
 
-```
+```ruby
 connection.misc.each do |link|
   target = "vendor/ba/#{link.href}"
   next if File.exist?(target)
   response = link.click
   File.open(target, "wb+") { |f| f.write(response.body) }
 end
+```
+
+### Usage with multiple client certificats
+
+Since September 2022, users with multiple client certificats issued to the same email address need to provide their respective partner ID when using the API.
+For user with only one certificat issued to their email address, providing the partner ID is optional.
+
+The partner ID can be provided as an optional keyword argument to the `upload`, `error_files` and `misc` methods:
+
+```ruby
+require 'ba_upload'
+connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
+
+connection.upload(file: 'your_file_path', partner_id: 'P000XXXXXX')
+connection.error_files(partner_id: 'P000XXXXXX')
+connection.misc(partner_id: 'P000XXXXXX')
+
 ```
 
 ## License
