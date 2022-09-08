@@ -14,29 +14,40 @@ module BaUpload
       @m.cert = @cert.path
     end
 
-    def upload(file: nil)
-      m.get 'https://hrbaxml.arbeitsagentur.de/in/'
+    def upload(file: nil, partner_id: nil)
+      url = base_url(partner_id) + "in/"
+      m.get url
       form = m.page.forms.first
       form.file_uploads.first.file_name = file
       form.submit
     end
 
-    def error_files
-      m.get 'https://hrbaxml.arbeitsagentur.de/'
+    def error_files(partner_id: nil)
+      url = base_url(partner_id)
+      m.get url
       links = m.page.links_with(text: /ESP|ESV/)
       links.map do |link|
         ErrorFile.new(link)
       end
     end
 
-    def misc
-      m.get 'https://hrbaxml.arbeitsagentur.de/'
+    def misc(partner_id: nil)
+      url = base_url(partner_id)
+      m.get url
       m.page.links_with(text: /sonstiges/).first.click
       m.page.links.reject { |i| i.href[/^\?|mailto:/] || i.href == '/' }
     end
 
     def shutdown
       m.shutdown
+    end
+
+    private
+
+    def base_url(partner_id)
+      url = "https://hrbaxml.arbeitsagentur.de/"
+      url += "daten/#{partner_id}/" unless partner_id.nil?
+      url
     end
   end
 end
