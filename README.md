@@ -115,10 +115,6 @@ create_table :ba_professions do |t|
  t.integer "qualifikationsniveau"
  t.datetime "deleted_on"
 end
-```
-
-
-lbkgruppe hochschulberuf ebene kuenstler bezeichnung_nl bezeichnung_nk suchname_nl
 
 class Ba::Profession < ApplicationRecord
   has_many :jobs
