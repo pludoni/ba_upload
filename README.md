@@ -33,7 +33,8 @@ require 'ba_upload'
 connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
 
 # Upload a xml-file
-connection.upload(file: File.open('/opt/vam-transfer/data/DSP000132700_2016-08-08_05-00-09.xml'))
+file_path = "/opt/vam-transfer/data/DSP000132700_2016-08-08_05-00-09.xml"
+connection.upload(file: file_path))
 
 # later cronjob to download all error files
 
