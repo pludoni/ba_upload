@@ -1,6 +1,11 @@
 require "ba_upload/version"
 require "openssl"
 
+if OpenSSL::VERSION >= '3.0.0'
+  # import legacy
+  OpenSSL::Provider.load("legacy")
+end
+
 module BaUpload
   def self.export_certificate(file_path:, passphrase:)
     cert = OpenSSL::PKCS12.new(File.read(file_path), passphrase)
