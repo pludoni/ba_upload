@@ -1,7 +1,7 @@
 require "ba_upload/version"
 require "openssl"
 
-if OpenSSL::VERSION >= '3.0.0'
+if OpenSSL::VERSION >= '3.0.0' && defined?(OpenSSL::Provider)
   # import legacy
   OpenSSL::Provider.load("legacy")
 end
