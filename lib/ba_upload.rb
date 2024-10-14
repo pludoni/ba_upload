@@ -20,6 +20,13 @@ module BaUpload
     cert = BaUpload.export_certificate(file_path: file_path, passphrase: passphrase)
     BaUpload::Connection.new(cert[:key], cert[:cert], cert[:ca_cert])
   end
+
+  def self.open(file_path:, passphrase:, &block)
+    conn = BaUpload.open_connection(file_path: file_path, passphrase: passphrase)
+    block.call(conn)
+  ensure
+    conn.shutdown
+  end
 end
 
 require 'ba_upload/connection'

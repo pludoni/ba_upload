@@ -51,11 +51,23 @@ end
 ```ruby
 #!/usr/bin/env ruby
 require 'ba_upload'
-connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
+BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
 connection.upload(file: File.open(ARGV[0]))
 ```
 
-Save to a file and just run it with the xml file as argument
+Save to a file and just run it with the xml file as argument. It's important, because the file upload of BA validates the original file name.
+
+
+### Memory safety
+
+because we are using Mechanize under the hood, it's a good idea to always close sockets, (with connection.shutdown), or use the open helper:
+
+```ruby
+BaUpload.open(file_path: 'config/Zertifikat-1XXXX.p12', passphrase:) do |c|
+    c.upload(file: file_path)
+    c.error_files....
+end
+```
 
 
 ### Downloading "misc" files
@@ -68,6 +80,19 @@ connection.misc.each do |link|
   next if File.exist?(target)
   response = link.click
   File.open(target, "wb+") { |f| f.write(response.body) }
+end
+```
+
+### Downloading 'Statistiken' xlsx reports
+
+Download XLSX reports (validation errors and "Stellenübersicht") from BA; You might use another Gem, like roo, axlsx etc. to parse those files if necessary.
+
+```ruby
+connection.statistics.each do |link|
+  link.tempfile
+
+  # or:
+  link.read
 end
 ```
 
@@ -255,6 +280,7 @@ xsd.validate(doc)
 
 <details>
 <summary>Generate a filename</summary>
+
 ```ruby
 # for historic reasons, you could transmit a bunch of files with the same timestamp using an index/offset, but usually, just putting 0 here should be enought
 index = 0
@@ -264,6 +290,7 @@ flag = ended ? "E" : "C"
 date = Time.zone.now.strftime "%Y-%m-%d_%H-%M-%S_F#{'%03d' % (index + 1)}#{flag}"
 "DS#{SUPPLIER_ID}_#{date}.xml"
 ```
+
 </details>
 
 - Upload the file using this Gem. You should wait a "couple of minutes" (tip: enqueue a activeJob for 10 minutes later), to fetch the resulting **error file**, and analyse that.

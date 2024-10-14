@@ -1,4 +1,5 @@
 require 'ba_upload/error_file'
+require 'ba_upload/statistic_file'
 module BaUpload
   class Connection
     attr_reader :m
@@ -16,7 +17,7 @@ module BaUpload
 
     def upload(file: nil, partner_id: nil)
       url = base_url(partner_id) + "in/"
-      m.get url
+      m.get(url)
       form = m.page.forms.first
       form.file_uploads.first.file_name = file
       form.submit
@@ -24,10 +25,18 @@ module BaUpload
 
     def error_files(partner_id: nil)
       url = base_url(partner_id)
-      m.get url
+      m.get(url)
       links = m.page.links_with(text: /ESP|ESV/)
       links.map do |link|
         ErrorFile.new(link)
+      end
+    end
+
+    def statistics(partner_id: nil)
+      url = base_url(partner_id) + "Statistiken"
+      m.get(url)
+      m.page.links_with(text: /xlsx/).map do |link|
+        StatisticFile.new(link)
       end
     end
 
