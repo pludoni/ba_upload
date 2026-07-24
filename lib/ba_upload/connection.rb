@@ -1,5 +1,6 @@
 require 'ba_upload/error_file'
 require 'ba_upload/statistic_file'
+require 'ba_upload/job_proposal_file'
 module BaUpload
   class Connection
     attr_reader :m
@@ -38,6 +39,18 @@ module BaUpload
       m.page.links_with(text: /xlsx/).map do |link|
         StatisticFile.new(link)
       end
+    end
+
+    def job_proposals(partner_id: nil)
+      url = base_url(partner_id) + "VV/"
+      m.get(url)
+      m.page.links.reject { |l| l.href.to_s[/^\?|mailto:/] || l.href == "/" }.map do |link|
+        JobProposalFile.new(link)
+      end
+    rescue Mechanize::ResponseCodeError => e
+      return [] if e.response_code.to_i == 404
+
+      raise
     end
 
     def misc(partner_id: nil)

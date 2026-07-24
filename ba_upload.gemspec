@@ -14,6 +14,11 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/pludoni/ba_upload"
   spec.license       = "MIT"
 
+  spec.metadata = {
+    "source_code_uri" => "https://github.com/pludoni/ba_upload",
+    "changelog_uri"   => "https://github.com/pludoni/ba_upload/blob/master/CHANGELOG.md",
+  }
+
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
